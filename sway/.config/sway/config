@@ -21,7 +21,11 @@ set $menu fuzzel
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/bg/unlock.png center
+output * bg ~/bg/image-1001.png fill
+
+### Desktop Portal & DBus environment
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP=sway
+exec systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP
 
 ### wl-clipboard + cliphist
 exec wl-paste --type text --watch cliphist store
@@ -35,35 +39,24 @@ exec wl-paste --type image --watch cliphist store
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
 ### Idle configuration
-#
-# Example configuration:
-#
-exec swayidle -w \
-        timeout 300 'swaylock -f -c 000000' \
-        timeout 600 'swaymsg "output * power off"' \ resume 'swaymsg "output * power on"' \
-        timeout 900 'systemctl suspend' \ before-sleep 'swaylock -f -c 000000'
+exec swayidle -w \\
+        timeout 300 'swaylock -f -c 000000' \\
+        timeout 600 'swaymsg "output * power off"' \\
+        resume 'swaymsg "output * power on"' \\
+        timeout 900 'systemctl suspend' \\
+        before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
 ### Input configuration
-#
-# Example configuration:
-#
-  input type:touchpad {
-      dwt enabled
-      tap enabled
-      natural_scroll enabled
-      middle_emulation enabled
-  }
-#
-#   input type:keyboard {
-#       xkb_layout "eu"
-#   }
-#
-# You can also configure each device individually.
-# Read `man 5 sway-input` for more information about this section.
+input type:touchpad {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+}
 
 ### Key bindings
 #
@@ -76,7 +69,7 @@ exec swayidle -w \
     bindsym $mod+Shift+q kill
 
     # Start your launcher
-    bindsym $mod+d exec $menu --show drun
+    bindsym $mod+space exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -162,7 +155,7 @@ exec swayidle -w \
     bindsym $mod+Shift+space floating toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+    bindsym $mod+d focus mode_toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
@@ -213,6 +206,7 @@ bindsym $mod+r mode "resize"
     # Special keys to adjust brightness via brightnessctl
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 1%-
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 1%+
+
     # Special key to take a screenshot with grim
     bindsym Print exec grim -g "$(slurp)" - | swappy -f -
 
@@ -224,8 +218,7 @@ bar {
     position top
 
     # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +' %d/%m|󱑇 %H:%M|󰁹'"$(cat /sys/class/power_supply/BAT1/capacity)"'|󰣇'; do sleep 1; done
+    status_command ~/.config/sway/status.sh
 
     colors {
         #statusline #ffffff
@@ -240,10 +233,13 @@ bar {
         inactive_workspace #00000000 #00000000 #888888
         urgent_workspace   #ff000080 #ff000080 #ffffff
     }
+
+    tray_output none
 }
 
-bindsym $mod+p exec GTK_THEME=Adwaita:dark pcmanfm
+bindsym $mod+p exec pcmanfm
 bindsym $mod+z exec zeditor
+bindsym $mod+x exec swaylock -f -c 000000
 bindsym $mod+c exec cliphist wipe
 bindsym $mod+v exec cliphist list | fuzzel --dmenu | cliphist decode | wl-copy
 bindsym $mod+b exec helium-browser
@@ -253,7 +249,6 @@ default_border none
 default_floating_border none
 gaps inner 5
 gaps outer 5
-default_border pixel 1
 smart_gaps on
 
 client.focused          #1e1e1e #1e1e1e #ffffff #3a3a3a #1e1e1e
