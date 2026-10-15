@@ -18,10 +18,13 @@ set $term foot
 # Your preferred application launcher
 set $menu fuzzel
 
+# Font for window titles and UI
+font pango:JetBrainsMono Nerd Font 10.5
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/bg/image-1001.png fill
+output * bg ~/bg/1-synth-scape.jpg fill
 
 ### Desktop Portal & DBus environment
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP=sway
@@ -30,6 +33,9 @@ exec systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DES
 ### wl-clipboard + cliphist
 exec wl-paste --type text --watch cliphist store
 exec wl-paste --type image --watch cliphist store
+
+### Input method
+exec fcitx5 -d
 
 #
 # Example configuration:
@@ -199,16 +205,23 @@ bindsym $mod+r mode "resize"
 # Utilities:
 #
     # Special keys to adjust volume via PulseAudio
-    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
-    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
-    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle && pkill -USR1 -f status.sh
+    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5% && pkill -USR1 -f status.sh
+    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5% && pkill -USR1 -f status.sh
     bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
     # Special keys to adjust brightness via brightnessctl
-    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 1%-
-    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 1%+
+    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 1%- && pkill -USR1 -f status.sh
+    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 1%+ && pkill -USR1 -f status.sh
 
     # Special key to take a screenshot with grim
     bindsym Print exec grim -g "$(slurp)" - | swappy -f -
+
+    # Screen recording with wf-recorder (bấm lại để dừng quay)
+    bindsym Shift+Print exec ~/.config/sway/record.sh area
+    bindsym $mod+Shift+r exec ~/.config/sway/record.sh area
+    bindsym $mod+Print exec ~/.config/sway/record.sh screen
+    bindsym $mod+Shift+Print exec ~/.config/sway/record.sh audio
+
 
 #
 # Status Bar:
@@ -216,22 +229,26 @@ bindsym $mod+r mode "resize"
 # Read `man 5 sway-bar` for more information about this section.
 bar {
     position top
+    font pango:JetBrainsMono Nerd Font 10.5
+    height 30
+    pango_markup enabled
+    status_edge_padding 10
+    status_padding 2
+    workspace_min_width 32
+    wrap_scroll yes
 
     # When the status_command prints a new line to stdout, swaybar updates.
     status_command ~/.config/sway/status.sh
 
     colors {
-        #statusline #ffffff
-        #background #323232
-        #inactive_workspace #32323200 #32323200 #5c5c5c
         background #00000000
-        statusline #ffffff
-        separator #ffffff00
+        statusline #cdd6f4
+        separator #00000000
 
-        focused_workspace  #ffffff20 #ffffff20 #ffffff
-        active_workspace   #ffffff10 #ffffff10 #ffffff
-        inactive_workspace #00000000 #00000000 #888888
-        urgent_workspace   #ff000080 #ff000080 #ffffff
+        focused_workspace  #89b4fa #89b4fa #11111b
+        active_workspace   #313244 #313244 #cdd6f4
+        inactive_workspace #00000000 #00000000 #6c7086
+        urgent_workspace   #f38ba8 #f38ba8 #11111b
     }
 
     tray_output none
