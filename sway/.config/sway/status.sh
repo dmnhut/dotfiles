@@ -142,7 +142,7 @@ while true; do
     fi
 
     # 7. Date & Time
-    date_part=$(date +'%a %d/%m')
+    date_part=$(date +'%d|%m')
     time_part=$(date +'%H:%M')
     datetime_str=$(pill "$c_lavender" "󰃭 " "${date_part} <span foreground=\"$c_cyan\">󱑆 </span> ${time_part}")
 
