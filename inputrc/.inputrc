@@ -1,0 +1,2 @@
+# Keep readline from producing an audible terminal bell.
+set bell-style none
