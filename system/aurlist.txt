@@ -1,0 +1,7 @@
+auto-cpufreq
+brave-bin
+catppuccin-gtk-theme-mocha
+helium-browser-bin
+pacseek
+papirus-folders-catppuccin-git
+paru

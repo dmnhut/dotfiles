@@ -211,9 +211,8 @@ bindsym $mod+r mode "resize"
     # Special key to take a screenshot with grim
     bindsym Print exec grim -g "$(slurp)" - | swappy -f -
 
-    # Screen recording with wf-recorder (bấm lại để dừng quay)
+    # Screen recording with wf-recorder
     bindsym Shift+Print exec ~/.config/sway/record.sh area
-    bindsym $mod+Shift+r exec ~/.config/sway/record.sh area
     bindsym $mod+Print exec ~/.config/sway/record.sh screen
     bindsym $mod+Shift+Print exec ~/.config/sway/record.sh audio
 
@@ -249,6 +248,7 @@ bar {
     tray_output none
 }
 
+bindsym $mod+Escape exec poweroff
 bindsym $mod+p exec pcmanfm
 bindsym $mod+z exec zeditor
 bindsym $mod+x exec swaylock -f -c 000000
@@ -256,6 +256,9 @@ bindsym $mod+c exec cliphist wipe
 bindsym $mod+v exec cliphist list | fuzzel --dmenu | cliphist decode | wl-copy
 bindsym $mod+b exec helium-browser
 bindsym $mod+m exec swaymsg seat seat0 cursor press button1
+
+exec sudo systemctl start bluetooth
+exec systemctl --user restart wireplumber pipewire
 
 default_border none
 default_floating_border none

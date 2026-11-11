@@ -1,0 +1,21 @@
+[Default Applications]
+text/plain=dev.zed.Zed.desktop
+image/jpeg=imv-dir.desktop
+text/x-shellscript=dev.zed.Zed.desktop
+text/html=helium.desktop
+x-scheme-handler/http=helium.desktop
+x-scheme-handler/https=helium.desktop
+x-scheme-handler/about=helium.desktop
+x-scheme-handler/unknown=helium.desktop
+image/png=imv-dir.desktop
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
+
+[Added Associations]
+text/plain=dev.zed.Zed.desktop;
+image/jpeg=imv-dir.desktop;
+text/x-shellscript=dev.zed.Zed.desktop;
+application/octet-stream=dev.zed.Zed.desktop;
+image/png=imv.desktop;imv-dir.desktop;
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=org.pwmt.zathura.desktop;libreoffice-writer.desktop;

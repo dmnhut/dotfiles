@@ -1,0 +1,10 @@
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# <device>
+<YOUR_PARTITION_UUID>	/         	ext4      	rw,noatime	0 1
+
+# <device>
+<YOUR_PARTITION_UUID>      	/boot     	vfat      	rw,noatime,noauto,x-systemd.automount,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro   0 0 
+
